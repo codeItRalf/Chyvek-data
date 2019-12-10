@@ -66,7 +66,7 @@ class Cart {
   }
 
   add(product) {
-    console.log("cart.add");
+    product = new Product(product, this, product.amount)
     // We are doing a json stringify of the product
     // minus the cart property of a product
     // (which is just a reference to the cart)
@@ -84,12 +84,11 @@ class Cart {
     // `.replace(/\n\s*/g, '\n'))
 
     
-    let selectedProduct = store.cartProducts.find(storeProd => storeProd.id === product.id);
+    let selectedProduct =  store.cartProducts.find(storeProd => storeProd.id === product.id);
     if(selectedProduct){
+      product = new Product(selectedProduct, this, selectedProduct.amount)
       product.amount += 1;
-    }
-
-    else{
+    }else{
       product.amount += 1;
       store.cartProducts.push(product);
 
@@ -97,7 +96,10 @@ class Cart {
     product.showDiscount();
     this.saveToStore(product);
     }
+    
 
+
+   
   removeFromStore(product) {
     let removedProduct = store.cartProducts.find(
       storeProd => storeProd.id === product.id

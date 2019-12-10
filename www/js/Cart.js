@@ -2,9 +2,7 @@ class Cart {
   constructor() {
     store.cartProducts = store.cartProducts || [];
     store.save();
-   // this.totalPrice = 0;
     this.calculateTotal();
-    // this.shipping = 'free'
     this.removeToolTipListener();
   }
 
@@ -37,11 +35,11 @@ class Cart {
        <h5 class="main-color">Order Total  : </h5>
    </div>
    <div class = " col-6 col-md-3 total-price d-flex flex-column justify-content-center align-items-start py-5">
-       <h6 id="total-price" class="main-color">0,00 € </h6>
-       <h6 id="total-discount" class="text-danger">0.00 €</h6>
+       <h6 id="total-price" class="main-color"></h6>
+       <h6 id="total-discount" class="text-danger"></h6>
        <h6 id="tax" class="main-color"> </h6>
        <h6 id="shipping" class="main-color"> </h6>
-       <h5 id="order-total" class="main-color">0,00 € </h5>
+       <h5 id="order-total" class="main-color"> </h5>
 
    </div> 
        
@@ -107,13 +105,13 @@ class Cart {
     store.cartProducts = store.cartProducts.filter(
       product => product != removedProduct
     );
+    store.save();
 
     this.updateCartIconQty()
     this.calculateTotal();
     $('.tooltip').remove();
   
 
-    store.save();
     //this.render();
   }
 
@@ -126,14 +124,13 @@ class Cart {
     store.save();
     //this.render();
     $(`#amount-${product.id}`).html(product.amount);
+
     this.calculateTotal();
     this.updateCartIconQty()
 
   }
 
   calculateTotal(){
-    this.totalPrice = 0;
-    this.totalDiscount = 0;
     this.calcDiscount();
     this.calcShipping();
     this.calcTax();
@@ -157,16 +154,14 @@ class Cart {
         }
         console.log('discount',discountQuantity,'for',forQuantity, 'you saved',discountSum)
         item.currentPrice -= discountSum;
-        //$(`#price-${item.id}`).html('€  ' + item.currentPrice);
         this.totalDiscount += discountSum;
 
-        //store.save();
       }
       this.totalPrice += item.currentPrice;
 
       $(`#price-${item.id}`).html(this.format(item.currentPrice) + ' €' );
       $('#total-price').html( this.format(this.totalPrice) + ' €');
-      $('#total-discount').html( this.format(this.totalDiscount) + ' €');
+      $('#total-discount').html('- ' + this.format(this.totalDiscount) + ' €');
 
     });
 

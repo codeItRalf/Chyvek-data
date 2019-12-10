@@ -35,8 +35,8 @@ class Cart {
        <h5 class="main-color">Order Total  : </h5>
    </div>
    <div class = " col-6 col-md-3 total-price d-flex flex-column justify-content-center align-items-start py-5">
-       <h6 id="total-price" class="main-color"></h6>
-       <h6 id="total-discount" class="text-danger"></h6>
+       <h6 id="total-price" class="main-color">0,00 €</h6>
+       <h6 id="total-discount" class="text-danger">0,00 €</h6>
        <h6 id="tax" class="main-color"> </h6>
        <h6 id="shipping" class="main-color"> </h6>
        <h5 id="order-total" class="main-color"> </h5>
@@ -112,7 +112,7 @@ class Cart {
     $('.tooltip').remove();
   
 
-    //this.render();
+    this.render();
   }
 
   saveToStore(product) {

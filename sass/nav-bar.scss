@@ -14,12 +14,23 @@ body { padding-top: 70px; }
     font-size: 90%;
   }
 
+  #produkter{
+    outline: none;
+  }
+
   #nav-active-line{
       position: absolute;
       border-bottom: 1px solid white;
       z-index: 3;
+      display: none;
     
   }
+
+  .icon-size{
+    margin-left: 5px;
+    font-size: 15px;
+  }
+ 
 
   #sub-nav{
   //  background-color:  var(--secondary);
@@ -27,6 +38,8 @@ body { padding-top: 70px; }
    border-radius: 7px;
 
   }
+
+
   
 
   @media screen and (min-width: 992px) {

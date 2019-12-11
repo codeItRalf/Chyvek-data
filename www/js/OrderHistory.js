@@ -1,8 +1,10 @@
+
 class OrderHistory {
 
 
   constructor(){
-  this.sort = false
+  this.sort = false;
+  this.orderCopy = []
   }
   render() {
 
@@ -29,7 +31,7 @@ class OrderHistory {
         <ol class="col-12" id="history-list">
 
 
-        ${store.purchases ? store.purchases.map(order => this.renderInList(order)).join(""):""} 
+        ${this.checkOrderHistories() ? this.orderCopy.map(order => this.renderInList(order)).join(""):this.orderListHandler()} 
         
           
 
@@ -47,14 +49,48 @@ class OrderHistory {
       }.bind(this));
 
 
-    $("#toggle-order" ).click(function(e) {
-      store.purchases.reverse()
+    $("#toggle-order" ).click( ()=> {
+      this.orderCopy = $.extend(true, [], store.purchases)
+      this.orderCopy.sort(this.compare.bind(this.sort))
       this.sort = !this.sort
       this.render()
-    }.bind(this))
+    })
     
   }
+ orderListHandler(){
+   let orderList = store.purchases.map(order => this.renderInList(order)).join("")
+   if (orderList){
+     return orderList;
+   }
+   else {
+     return ""
+   }
+ }
+ checkOrderHistories(){
+    if (store.purchases && store.purchases.length > this.orderCopy.length){
+      this.sort = false;
+      return false;
+    }
+    else  {
+      return true;
+    }
+ }
+ compare(a, b) {
 
+    const orderA = a.orderNumber;
+    const orderB = b.orderNumber;
+    
+    let comparison = 0;
+
+      if (orderA > orderB) {
+        comparison = this ? 1 : -1;
+      } else if (orderA < orderB) {
+        comparison= this ? -1 : 1;
+      }
+  
+    return comparison;
+  }
+ 
 
 
   renderInList(order) {
@@ -216,18 +252,34 @@ class OrderHistory {
     let cartList = [];
     cartList = object.cart.orderList;
 
-    console.log(object.cart.orderList);
+    // hack to convert cartList to array
+    // (should have been an array already, where did that go wrong?)
+    
+    // let newCartList = [];
+    // for(let key in cartList){
+    //   newCartList[key] = cartList[key];
+    // }
+    // cartList = newCartList;
+
+    console.log(cartList);
 
     cartList.map(product => {
-      listProducts += /*html*/ `<li class="list-group-item d-flex justify-content-between lh-condensed">
-     <div>
-        <div id="thumb-nail">
-        <img class="my-0 img-responsive img-rounded mh-100 mw-auto" src="${product.image}">
+    
+      listProducts += /*html*/ `<li class="list-group-item d-flex justify-content-between lh-condensed container">
+      <div class="row">
+        <div class = "col">
+            <div id="thumb-nail">
+            <img class="my-0 img-responsive img-rounded mh-100 mw-auto w-100" src="${product.image}">
+            </div>
+            <small class="text-muted my-0">${product.name} </small>
         </div>
-        <small class="text-muted">${product.name}  </small>
-    </div>
-    <span class="text-muted">${product.price} €</span>
-    <span class="text-muted">Qty: ${product.amount} </span>
+        <div class="col d-flex justify-content-between">
+            <span class="text-muted">${product.price} €</span>
+            <span class="text-muted">Qty: ${product.amount} </span>
+
+        </div>
+
+      </div>
     
 </li>`;
     });

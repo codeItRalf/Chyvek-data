@@ -27,6 +27,7 @@ class Confirmation {
     this.saveOrder();
     store.cartProducts = [];
     store.save();
+    this.cart.totalPrice = 0
     this.cart.updateCartIconQty();
     }
   }
